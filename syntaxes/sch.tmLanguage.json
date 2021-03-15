@@ -1,0 +1,373 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"fileTypes": ["sch"],
+	"name": "Schlang",
+	"scopeName": "source.sch",
+	"patterns": [
+		{
+			"comment": "use statements",
+			"name": "meta.use.sch",
+			"begin": "\\b(use)\\s",
+			"beginCaptures": {
+				"1": {
+					"name": "keyword.other.sch"
+				}
+			},
+			"end": ";",
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.semi.sch"
+				}
+			},
+			"patterns": [
+			]
+		},
+		{
+			"include": "#comment"
+		},
+		{
+			"include": "#functions"
+		},
+		{
+			"include": "#keywords"
+		},
+		{
+			"include": "#restricted"
+		},
+		{
+			"include": "#strings"
+		},
+		{
+			"include": "#literal"
+		},
+		{
+			"include": "#types"
+		},
+		{
+			"include": "#variables"
+		}
+	],
+	"repository": {
+		"comment": {
+		  "patterns": [
+			{
+			  "begin": "/\\*",
+			  "end": "\\*/",
+			  "name": "comment.block.sch"
+			},
+			{
+			  "match": "//.*$\\n?",
+			  "name": "comment.line.sch"
+			}
+		  ]
+		},
+		"restricted": {
+			"patterns": [{
+				"name": "keyword.control.sch",
+				"match": "\\b(strict|mut)\\b"
+			}]
+		},
+		"keywords": {
+			"patterns": [
+				{
+					"name": "keyword.control.sch",
+					"match": "\\b(if|while|for|return)\\b"
+				},
+				{
+					"name": "storage.type.function.sch",
+					"match": "\\b(is|or|and|mod|not|more|less|than)\\b"
+				}
+			]
+		},
+		"strings": {
+			"name": "string.quoted.double.sch",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "constant.character.escape.sch",
+					"match": "\\\\."
+				}
+			]
+		},
+		"literal": {
+			"patterns": [
+				{
+					"include": "#numeric-literal"
+				},
+				{
+					"include": "#boolean-literal"
+				}
+			]
+		},
+		"numeric-literal": {
+			"patterns": [
+				{
+					"name": "constant.numeric.hex.sch",
+					"match": "\\b(?<!\\$)0(?:x|X)[0-9a-fA-F][0-9a-fA-F_]*(n)?\\b(?!\\$)",
+					"captures": {
+						"1": {
+							"name": "storage.type.numeric.bigint.sch"
+						}
+					}
+				},
+				{
+					"name": "constant.numeric.binary.sch",
+					"match": "\\b(?<!\\$)0(?:b|B)[01][01_]*(n)?\\b(?!\\$)",
+					"captures": {
+						"1": {
+							"name": "storage.type.numeric.bigint.sch"
+						}
+					}
+				},
+				{
+					"name": "constant.numeric.octal.sch",
+					"match": "\\b(?<!\\$)0(?:o|O)?[0-7][0-7_]*(n)?\\b(?!\\$)",
+					"captures": {
+						"1": {
+							"name": "storage.type.numeric.bigint.sch"
+						}
+					}
+				},
+				{
+					"match": "(?x)\n(?<!\\$)(?:\n  (?:\\b[0-9][0-9_]*(\\.)[0-9][0-9_]*[eE][+-]?[0-9][0-9_]*(n)?\\b)| # 1.1E+3\n  (?:\\b[0-9][0-9_]*(\\.)[eE][+-]?[0-9][0-9_]*(n)?\\b)|             # 1.E+3\n  (?:\\B(\\.)[0-9][0-9_]*[eE][+-]?[0-9][0-9_]*(n)?\\b)|             # .1E+3\n  (?:\\b[0-9][0-9_]*[eE][+-]?[0-9][0-9_]*(n)?\\b)|                 # 1E+3\n  (?:\\b[0-9][0-9_]*(\\.)[0-9][0-9_]*(n)?\\b)|                      # 1.1\n  (?:\\b[0-9][0-9_]*(\\.)(n)?\\B)|                                  # 1.\n  (?:\\B(\\.)[0-9][0-9_]*(n)?\\b)|                                  # .1\n  (?:\\b[0-9][0-9_]*(n)?\\b(?!\\.))                                 # 1\n)(?!\\$)",
+					"captures": {
+						"0": {
+							"name": "constant.numeric.decimal.sch"
+						},
+						"1": {
+							"name": "meta.delimiter.decimal.period.sch"
+						},
+						"2": {
+							"name": "storage.type.numeric.bigint.sch"
+						},
+						"3": {
+							"name": "meta.delimiter.decimal.period.sch"
+						},
+						"4": {
+							"name": "storage.type.numeric.bigint.sch"
+						},
+						"5": {
+							"name": "meta.delimiter.decimal.period.sch"
+						},
+						"6": {
+							"name": "storage.type.numeric.bigint.sch"
+						},
+						"7": {
+							"name": "storage.type.numeric.bigint.sch"
+						},
+						"8": {
+							"name": "meta.delimiter.decimal.period.sch"
+						},
+						"9": {
+							"name": "storage.type.numeric.bigint.sch"
+						},
+						"10": {
+							"name": "meta.delimiter.decimal.period.sch"
+						},
+						"11": {
+							"name": "storage.type.numeric.bigint.sch"
+						},
+						"12": {
+							"name": "meta.delimiter.decimal.period.sch"
+						},
+						"13": {
+							"name": "storage.type.numeric.bigint.sch"
+						},
+						"14": {
+							"name": "storage.type.numeric.bigint.sch"
+						}
+					}
+				}
+			]
+		},
+		"boolean-literal": {
+			"patterns": [
+				{
+					"name": "constant.numeric.decimal.sch",
+					"match": "(?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))true(?![_$[:alnum:]])(?:(?=\\.\\.\\.)|(?!\\.))"
+				},
+				{
+					"name": "constant.numeric.decimal.sch",
+					"match": "(?<![_$[:alnum:]])(?:(?<=\\.\\.\\.)|(?<!\\.))false(?![_$[:alnum:]])(?:(?=\\.\\.\\.)|(?!\\.))"
+				}
+			]
+		},
+		"types": {
+			"patterns": [
+				{
+					"comment": "parameterized numeric primitives",
+					"begin": "\\b(int|float)(<)",
+					"beginCaptures": {
+						"1": {
+							"name": "entity.name.type.primitive.sch"
+						},
+						"2": {
+							"name": "punctuation.brackets.angle.sch"
+						}
+					},
+					"end": ">",
+					"endCaptures": {
+						"0": {
+							"name": "punctuation.brackets.angle.sch"
+						}
+					},
+					"patterns": [
+						{
+							"comment": "numeric types",
+							"match": "\\b(f32|f64|i128|i16|i32|i64|i8|u128|u16|u32|u64|u8)\\b",
+							"name": "entity.name.type.numeric.sch"
+						}
+					]
+				},
+				{
+					"comment": "primitive types",
+					"name": "entity.name.type.primitive.sch",
+					"match": "\\b(bool|string|int|float)\\b"
+				}
+			]
+		},
+		"variables": {
+			"patterns": [
+				{
+					"comment": "variables",
+					"name": "variable.other.sch",
+					"match": "\\b(?<!(?<!\\.)\\.)(?:r#(?!(crate|[Ss]elf|super)))?[A-Za-z0-9_]+\\b"
+				}
+			]
+		},
+		"functions": {
+			"patterns": [
+				{
+					"comment": "function definition",
+					"name": "meta.function.definition.sch",
+					"begin": "\\b(fn)\\s+((?:r#(?!crate|[Ss]elf|super))?[A-Za-z0-9_]+)((\\()|(<))",
+					"beginCaptures": {
+						"1": {
+							"name": "keyword.other.fn.sch"
+						},
+						"2": {
+							"name": "entity.name.function.sch"
+						},
+						"4": {
+							"name": "punctuation.brackets.round.sch"
+						},
+						"5": {
+							"name": "punctuation.brackets.angle.sch"
+						}
+					},
+					"end": "\\{|;",
+					"endCaptures": {
+						"0": {
+							"name": "punctuation.brackets.curly.sch"
+						}
+					},
+					"patterns": [
+						{
+							"include": "#comment"
+						},
+						{
+							"include": "#keywords"
+						},
+						{
+							"include": "#restricted"
+						},
+						{
+							"include": "#strings"
+						},
+						{
+							"include": "#literal"
+						},
+						{
+							"include": "#types"
+						},
+						{
+							"include": "#variables"
+						}
+					]
+				},
+				{
+					"comment": "function/method calls, chaining",
+					"name": "meta.function.call.sch",
+					"begin": "((?:r#(?!crate|[Ss]elf|super))?[A-Za-z0-9_]+)(\\()",
+					"beginCaptures": {
+						"1": {
+							"name": "entity.name.function.sch"
+						},
+						"2": {
+							"name": "punctuation.brackets.round.sch"
+						}
+					},
+					"end": "\\)",
+					"endCaptures": {
+						"0": {
+							"name": "punctuation.brackets.round.sch"
+						}
+					},
+					"patterns": [
+						{
+							"include": "#comment"
+						},
+						{
+							"include": "#keywords"
+						},
+						{
+							"include": "#restricted"
+						},
+						{
+							"include": "#strings"
+						},
+						{
+							"include": "#literal"
+						},
+						{
+							"include": "#types"
+						},
+						{
+							"include": "#variables"
+						}
+					]
+				},
+				{
+					"comment": "function/method calls with turbofish",
+					"name": "meta.function.call.sch",
+					"begin": "((?:r#(?!crate|[Ss]elf|super))?[A-Za-z0-9_]+)(?=::<.*>\\()",
+					"beginCaptures": {
+						"1": {
+							"name": "entity.name.function.sch"
+						}
+					},
+					"end": "\\)",
+					"endCaptures": {
+						"0": {
+							"name": "punctuation.brackets.round.sch"
+						}
+					},
+					"patterns": [
+						{
+							"include": "#comment"
+						},
+						{
+							"include": "#keywords"
+						},
+						{
+							"include": "#restricted"
+						},
+						{
+							"include": "#strings"
+						},
+						{
+							"include": "#literal"
+						},
+						{
+							"include": "#types"
+						},
+						{
+							"include": "#variables"
+						}
+					]
+				}
+			]
+		}
+	}
+}
