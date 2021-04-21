@@ -64,7 +64,7 @@
 		"restricted": {
 			"patterns": [{
 				"name": "keyword.control.sch",
-				"match": "\\b(strict|mut)\\b"
+				"match": "\\b(strict|mut|shape|category|public|local)\\b"
 			}]
 		},
 		"keywords": {
@@ -197,7 +197,7 @@
 			"patterns": [
 				{
 					"comment": "parameterized numeric primitives",
-					"begin": "\\b(int|float)(<)",
+					"begin": "\\b(int|sint|float)(<)",
 					"beginCaptures": {
 						"1": {
 							"name": "entity.name.type.primitive.sch"
@@ -215,7 +215,7 @@
 					"patterns": [
 						{
 							"comment": "numeric types",
-							"match": "\\b(f32|f64|i128|i16|i32|i64|i8|u128|u16|u32|u64|u8)\\b",
+							"match": "\\b(128|64|32|16|8)\\b",
 							"name": "entity.name.type.numeric.sch"
 						}
 					]
@@ -223,7 +223,7 @@
 				{
 					"comment": "primitive types",
 					"name": "entity.name.type.primitive.sch",
-					"match": "\\b(bool|string|int|float)\\b"
+					"match": "\\b(bool|string|int|sint|float)\\b"
 				}
 			]
 		},
